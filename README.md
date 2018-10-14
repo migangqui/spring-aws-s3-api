@@ -127,3 +127,8 @@ interface AmazonS3Service {
     fun deleteFile(path: String): Boolean
 }
 ```
+## Next improvements
+
+In future versions is planned include:
+* AWS S3 File access configuration (nowadays is Public Read)
+* ... 
