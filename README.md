@@ -1,4 +1,4 @@
-# Spring AWS S3 API
+# Spring AWS S3 API (Java/Kotlin)
 
 Here we are a Java and a Kotlin API to manage files of AmazonS3 in Spring framework. In order to use it, are necesaries the following steps:
 
@@ -130,5 +130,5 @@ interface AmazonS3Service {
 ## Next improvements
 
 In future versions is planned include:
-* AWS S3 File access configuration (nowadays is Public Read)
+* AWS S3 File access configuration (nowadays is Public Read by default)
 * ... 
