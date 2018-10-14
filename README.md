@@ -32,7 +32,7 @@ If you use Kotlin:
 
 ### Register the following properties in your application.yml:
 
-```xml
+```yaml
 amazon:
     s3:
         accessKey: [AMAZON_ACCESS_KEY]
