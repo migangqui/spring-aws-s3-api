@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+ 
+    <groupId>com.migangqui</groupId>
+    <artifactId>spring-aws-s3</artifactId>
+    <version>1.0.0.RC</version>
+    <packaging>pom</packaging>
+ 
+    <name>spring-aws-s3</name>
+	<description>Spring AWS S3 Libraries</description>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+    <modules>
+        <module>spring-aws-s3-java</module>
+        <module>spring-aws-s3-kotlin</module>
+    </modules>
+
+    <dependencies>
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>2.0.4.RELEASE</version>
+        </dependency>
+        <!-- Amazon -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.11.426</version>
+        </dependency>
+    </dependencies>
+ 
+</project>
