@@ -65,12 +65,12 @@ You must add in your component scan configuration the package ```com.migangqui``
 ## File size
 
 To controle max size of files you can upload, set the following properties:
-```yml
+```yaml
 spring:
     http:
         multipart:
-            max-file-size=128KB
-            max-request-size=128KB
+            max-file-size: 128KB
+            max-request-size: 128KB
 ```
 
 ## Localstack support
@@ -78,7 +78,7 @@ spring:
 This library can be tested with Localstack (https://github.com/localstack/localstack).
 You only have to set the following properties in your application.yml:
 
-```yml
+```yaml
 localstack:
   enabled: false (by default)
   endpoint: http://localhost:4572
