@@ -3,19 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
- 
+
     <groupId>com.migangqui</groupId>
     <artifactId>spring-aws-s3</artifactId>
     <version>1.0.0.RC</version>
     <packaging>pom</packaging>
- 
-    <name>spring-aws-s3</name>
-	<description>Spring AWS S3 Libraries</description>
 
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-	</properties>
+    <name>spring-aws-s3</name>
+    <description>Spring AWS S3 Libraries</description>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
     <modules>
         <module>spring-aws-s3-java</module>
@@ -32,9 +32,9 @@
         <!-- Amazon -->
         <dependency>
             <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>1.11.426</version>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.11.428</version>
         </dependency>
     </dependencies>
- 
+
 </project>
