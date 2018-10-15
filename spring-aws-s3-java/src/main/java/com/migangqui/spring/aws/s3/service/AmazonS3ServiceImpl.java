@@ -11,12 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.concurrent.Future;
 
 @Slf4j
 @Service
@@ -48,7 +50,12 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 
 			String path = folder.concat("/").concat(name);
 
-			uploadFileToS3(path, streamToUpload, metadata);
+			PutObjectRequest request = new PutObjectRequest(properties.getBucketName(), path, stream, metadata)
+					.withCannedAcl(CannedAccessControlList.PublicRead);
+
+			log.debug("Uploading file to {}", path);
+
+			amazonS3Client.putObject(request);
 
 			result = UploadFileResult.builder().fileName(name).status(HttpStatus.SC_OK).build();
 		} catch (AmazonServiceException ase) {
@@ -74,14 +81,14 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 	
 	@Async
 	@Override
-	public UploadFileResult uploadFileAsync(InputStream stream, String folder, String name, String contentType) {
-		return uploadFile(stream, folder, name, contentType);
+	public Future<UploadFileResult> uploadFileAsync(InputStream stream, String folder, String name, String contentType) {
+		return new AsyncResult<>(uploadFile(stream, folder, name, contentType));
 	}
 
 	@Async
 	@Override
-	public UploadFileResult uploadFileAsync(byte[] bytes, String folder, String name, String contentType) {
-		return uploadFileAsync(new ByteArrayInputStream(bytes), folder, name, contentType);
+	public Future<UploadFileResult> uploadFileAsync(byte[] bytes, String folder, String name, String contentType) {
+		return new AsyncResult<>(uploadFile(new ByteArrayInputStream(bytes), folder, name, contentType));
 	}
 
 	@Override
@@ -110,13 +117,6 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 	}
 
 	/* Private methods */
-
-	private void uploadFileToS3(String path, InputStream stream, ObjectMetadata metadata) {
-		PutObjectRequest request = new PutObjectRequest(properties.getBucketName(), path, stream, metadata)
-				.withCannedAcl(CannedAccessControlList.PublicRead);
-		log.debug("Uploading file to {}", path);
-		amazonS3Client.putObject(request);
-	}
 
 	private void showAmazonServiceExceptionUploadFileLogs(AmazonServiceException ase) {
 		log.error("Caught an AmazonServiceException, which means your request made it "

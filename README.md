@@ -141,5 +141,5 @@ interface AmazonS3Service {
 In future versions is planned include:
 * AWS S3 File access configuration (nowadays is Public Read by default)
 * Unit tests
-* Examples
+* Async support to whole methods
 * ... 

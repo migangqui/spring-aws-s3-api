@@ -10,11 +10,13 @@ import com.migangqui.spring.aws.s3.property.AmazonS3Properties
 import mu.KotlinLogging
 import org.apache.http.HttpStatus
 import org.springframework.scheduling.annotation.Async
+import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.util.concurrent.Future
 
 @Service
 class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties: AmazonS3Properties) : AmazonS3Service {
@@ -36,7 +38,12 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties
 
             val path = "$folder/$name"
 
-            uploadFileToS3(path, streamToUpload, metadata)
+            val request = PutObjectRequest(properties.bucketName, path, stream, metadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead)
+
+            log.debug("Uploading file to $path")
+
+            s3Client.putObject(request)
 
             result = UploadFileResult(name, HttpStatus.SC_OK)
         } catch (ase: AmazonServiceException) {
@@ -58,13 +65,13 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties
     }
 
     @Async
-    override fun uploadFileAsync(stream: InputStream, folder: String, name: String, contentType: String): UploadFileResult {
-        return uploadFile(stream, folder, name, contentType)
+    override fun uploadFileAsync(stream: InputStream, folder: String, name: String, contentType: String): Future<UploadFileResult> {
+        return AsyncResult(uploadFile(stream, folder, name, contentType))
     }
 
     @Async
-    override fun uploadFileAsync(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult {
-        return uploadFile(ByteArrayInputStream(bytes), folder, name, contentType)
+    override fun uploadFileAsync(bytes: ByteArray, folder: String, name: String, contentType: String): Future<UploadFileResult> {
+        return AsyncResult(uploadFile(ByteArrayInputStream(bytes), folder, name, contentType))
     }
 
     override fun getFile(path: String): InputStream {
@@ -91,13 +98,6 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties
     }
 
     /* Private methods */
-
-    private fun uploadFileToS3(path: String, stream: InputStream?, metadata: ObjectMetadata) {
-        val request = PutObjectRequest(properties.bucketName, path, stream, metadata)
-                .withCannedAcl(CannedAccessControlList.PublicRead)
-        log.debug("Uploading file to $path")
-        s3Client.putObject(request)
-    }
 
     private fun showAmazonServiceExceptionUploadFileLogs(ase: AmazonServiceException) {
         log.error("Caught an AmazonServiceException, which means your request made it " +
