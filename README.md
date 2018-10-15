@@ -88,6 +88,15 @@ localstack:
 In order to run easily Localstack, I have added ```docker-compose.yml``` file to the folder ```localstack```. 
 You have run the command ```docker-compose up``` to make it work.
 
+I hardly recommend install AWS CLI in your local. It helps you to manage the buckets to run the tests with Localstack.
+Here you are the documentation to install: https://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html
+
+To create a local bucket you must run this command `aws --endpoint-url=http://localhost:4572 s3 mb s3://mytestbucket`
+
+To check out if the bucket has been created run this command `aws --endpoint-url=http://localhost:4572 s3 ls`
+
+When you create a bucket, you have to add `yourbucketname.localhost` to your hosts local file mapped to `127.0.0.1`.
+
 ## How to use
 
 You have to inject ```AmazonS3Service``` as dependency in your Spring component.
