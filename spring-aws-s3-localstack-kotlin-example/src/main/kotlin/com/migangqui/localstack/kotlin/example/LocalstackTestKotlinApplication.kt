@@ -25,7 +25,7 @@ class MediaController(private val amazonS3Service: AmazonS3Service) {
     @PostMapping
     @Throws(IOException::class)
     fun uploadFile(@RequestBody file: MultipartFile, @RequestParam folder: String, @RequestParam name: String): UploadFileResult {
-        return amazonS3Service!!.uploadFile(file.bytes, folder, name, file.contentType!!)
+        return amazonS3Service.uploadFile(file.bytes, folder, name, file.contentType!!)
     }
 }
 
