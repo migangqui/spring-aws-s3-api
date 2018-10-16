@@ -50,7 +50,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 
 			String path = folder.concat("/").concat(name);
 
-			PutObjectRequest request = new PutObjectRequest(properties.getBucketName(), path, stream, metadata)
+			PutObjectRequest request = new PutObjectRequest(properties.getBucketName(), path, streamToUpload, metadata)
 					.withCannedAcl(CannedAccessControlList.PublicRead);
 
 			log.debug("Uploading file to {}", path);
