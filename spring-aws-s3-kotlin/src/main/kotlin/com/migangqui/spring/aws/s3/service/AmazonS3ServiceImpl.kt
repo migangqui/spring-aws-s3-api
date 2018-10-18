@@ -38,7 +38,7 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties
 
             val path = "$folder/$name"
 
-            val request = PutObjectRequest(properties.bucketName, path, stream, metadata)
+            val request = PutObjectRequest(properties.bucketName, path, streamToUpload, metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead)
 
             log.debug("Uploading file to $path")

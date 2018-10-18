@@ -13,10 +13,10 @@ import java.io.IOException
 @EnableAsync
 @ComponentScan("com.migangqui")
 @SpringBootApplication
-class LocalstackTestApplication
+class LocalstackTestKotlinApplication
 
 fun main(args: Array<String>) {
-    SpringApplication.run(LocalstackTestApplication::class.java, *args)
+    SpringApplication.run(LocalstackTestKotlinApplication::class.java, *args)
 }
 
 @RestController
