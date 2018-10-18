@@ -67,7 +67,7 @@ You must add in your component scan configuration the package ```com.migangqui``
 To controle max size of files you can upload, set the following properties:
 ```yaml
 spring:
-    http:
+    servlet:
         multipart:
             max-file-size: 128KB
             max-request-size: 128KB
