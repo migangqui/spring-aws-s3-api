@@ -6,5 +6,4 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @EnableConfigurationProperties(AmazonS3Properties::class)
-class AmazonS3PropertiesConfig {
-}
+class AmazonS3PropertiesConfig
