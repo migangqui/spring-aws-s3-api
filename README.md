@@ -12,7 +12,7 @@ If you use Java:
 
 ```xml
 <dependency>
-	<groupId>com.migangqui</groupId>
+	<groupId>com.github.migangqui</groupId>
 	<artifactId>spring-aws-s3-java</artifactId>
 	<version>${currentVersion}</version>
 </dependency>
@@ -22,7 +22,7 @@ If you use Kotlin:
 
 ```xml
 <dependency>
-	<groupId>com.migangqui</groupId>
+	<groupId>com.github.migangqui</groupId>
 	<artifactId>spring-aws-s3-kotlin</artifactId>
 	<version>${currentVersion}</version>
 </dependency>
