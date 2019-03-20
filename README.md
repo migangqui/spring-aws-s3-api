@@ -28,7 +28,7 @@ If you use Kotlin:
 </dependency>
 ```
 
-```${currentVersion}``` right now is ```1.0.0.RC```
+```${currentVersion}``` right now is ```1.0.0```
 
 ### Register the following properties in your application.yml:
 
@@ -60,7 +60,7 @@ Add ```@EnableAsync``` annotation in your Spring Application class to enable asy
 
 ## Component scan
 
-You must add in your component scan configuration the package ```com.migangqui```.
+You must add in your component scan configuration the package ```com.github.migangqui```.
 
 ## File size
 
@@ -141,5 +141,4 @@ interface AmazonS3Service {
 In future versions is planned include:
 * AWS S3 File access configuration (nowadays is Public Read by default)
 * Unit tests
-* Async support to whole methods
 * ... 

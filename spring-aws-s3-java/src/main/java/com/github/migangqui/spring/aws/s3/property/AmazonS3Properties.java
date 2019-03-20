@@ -1,4 +1,4 @@
-package com.migangqui.spring.aws.s3.property;
+package com.github.migangqui.spring.aws.s3.property;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;

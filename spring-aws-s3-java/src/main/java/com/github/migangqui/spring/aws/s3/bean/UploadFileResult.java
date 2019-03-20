@@ -1,4 +1,4 @@
-package com.migangqui.spring.aws.s3.bean;
+package com.github.migangqui.spring.aws.s3.bean;
 
 import lombok.Builder;
 import lombok.Getter;

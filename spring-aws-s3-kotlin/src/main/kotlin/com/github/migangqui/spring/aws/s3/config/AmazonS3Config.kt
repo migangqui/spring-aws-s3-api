@@ -1,4 +1,4 @@
-package com.migangqui.spring.aws.s3.config
+package com.github.migangqui.spring.aws.s3.config
 
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.AWSCredentialsProvider
@@ -6,7 +6,7 @@ import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import com.migangqui.spring.aws.s3.property.AmazonS3Properties
+import com.github.migangqui.spring.aws.s3.property.AmazonS3Properties
 import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

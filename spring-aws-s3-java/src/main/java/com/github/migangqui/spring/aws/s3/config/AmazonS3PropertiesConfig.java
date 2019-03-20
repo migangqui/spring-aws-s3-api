@@ -1,6 +1,6 @@
-package com.migangqui.spring.aws.s3.config;
+package com.github.migangqui.spring.aws.s3.config;
 
-import com.migangqui.spring.aws.s3.property.AmazonS3Properties;
+import com.github.migangqui.spring.aws.s3.property.AmazonS3Properties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,12 +1,12 @@
-package com.migangqui.spring.aws.s3.service
+package com.github.migangqui.spring.aws.s3.service
 
 import com.amazonaws.AmazonClientException
 import com.amazonaws.AmazonServiceException
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.*
 import com.amazonaws.util.IOUtils
-import com.migangqui.spring.aws.s3.bean.UploadFileResult
-import com.migangqui.spring.aws.s3.property.AmazonS3Properties
+import com.github.migangqui.spring.aws.s3.bean.UploadFileResult
+import com.github.migangqui.spring.aws.s3.property.AmazonS3Properties
 import mu.KotlinLogging
 import org.apache.http.HttpStatus
 import org.springframework.scheduling.annotation.Async

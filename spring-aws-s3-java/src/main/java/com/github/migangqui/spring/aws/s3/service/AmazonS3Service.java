@@ -1,6 +1,6 @@
-package com.migangqui.spring.aws.s3.service;
+package com.github.migangqui.spring.aws.s3.service;
 
-import com.migangqui.spring.aws.s3.bean.UploadFileResult;
+import com.github.migangqui.spring.aws.s3.bean.UploadFileResult;
 
 import java.io.InputStream;
 import java.util.concurrent.Future;
