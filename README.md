@@ -2,10 +2,6 @@
 
 Here we are a Java and a Kotlin API to manage files of AmazonS3 in Spring framework. In order to use it, are necesaries the following steps:
 
-## Compile the project (only for Kotlin project)
-
-Clone the repo and execute ```mvn clean -U install``` command (the Kotlin project jar isn't at maven central at this moment).
-
 ### Add dependency to pom.xml:
 
 If you use Java:
@@ -29,6 +25,8 @@ If you use Kotlin (not in Maven central):
 ```
 
 ```${currentVersion}``` right now is ```1.0.0```
+
+Both them are in Maven Central.
 
 ### Register the following properties in your application.yml:
 
