@@ -4,7 +4,7 @@ Here we are a Java and a Kotlin API to manage files of AmazonS3 in Spring framew
 
 ### Add dependency to pom.xml:
 
-If you use Java:
+If you use Java (https://mvnrepository.com/artifact/com.github.migangqui/spring-aws-s3-java):
 
 ```xml
 <dependency>
@@ -14,7 +14,7 @@ If you use Java:
 </dependency>
 ```
 
-If you use Kotlin (not in Maven central):
+If you use Kotlin (https://mvnrepository.com/artifact/com.github.migangqui/spring-aws-s3-kotlin):
 
 ```xml
 <dependency>
