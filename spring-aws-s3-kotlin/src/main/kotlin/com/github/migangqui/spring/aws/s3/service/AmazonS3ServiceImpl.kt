@@ -45,7 +45,7 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties
 
             s3Client.putObject(request)
 
-            result = UploadFileResult(name, HttpStatus.SC_OK)
+            result = UploadFileResult(fileName = name, status = HttpStatus.SC_OK)
         } catch (ase: AmazonServiceException) {
             showAmazonServiceExceptionUploadFileLogs(ase)
             result = UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ase.errorMessage, ase)
