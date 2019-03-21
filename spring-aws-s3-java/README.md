@@ -12,4 +12,4 @@ This is a Java API to manage files of AmazonS3 in Spring.
 </dependency>
 ```
 
-```${currentVersion}``` right now is ```1.0.0.RC```
+```${currentVersion}``` right now is ```1.0.0```
