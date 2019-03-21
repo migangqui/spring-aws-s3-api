@@ -24,8 +24,7 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties
     private val log = KotlinLogging.logger {}
 
     override fun uploadFile(stream: InputStream, folder: String, name: String, contentType: String): UploadFileResult {
-        var result: UploadFileResult
-        try {
+        return try {
             val streamToUpload = stream.clone()
 
             val metadata = ObjectMetadata()
@@ -45,19 +44,17 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties
 
             s3Client.putObject(request)
 
-            result = UploadFileResult(fileName = name, status = HttpStatus.SC_OK)
+            UploadFileResult(fileName = name, status = HttpStatus.SC_OK)
         } catch (ase: AmazonServiceException) {
             showAmazonServiceExceptionUploadFileLogs(ase)
-            result = UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ase.errorMessage, ase)
+            UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ase.errorMessage, ase)
         } catch (ace: AmazonClientException) {
             showAmazonClientExceptionUploadFileLogs(ace)
-            result = UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ace.message, ace)
+            UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ace.message, ace)
         } catch (e: Exception) {
             log.error(e.message, e)
-            result = UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.message, e)
+            UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.message, e)
         }
-
-        return result
     }
 
     override fun uploadFile(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult {
@@ -82,19 +79,20 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties
 
     override fun deleteFile(path: String): Boolean {
         log.info("Deleting file from path $path")
-        var result = false
-        try {
+        return try {
             val request = DeleteObjectRequest(properties.bucketName, path)
             s3Client.deleteObject(request)
-            result = true
+            true
         } catch (ase: AmazonServiceException) {
             showAmazonServiceExceptionUploadFileLogs(ase)
+            false
         } catch (ace: AmazonClientException) {
             showAmazonClientExceptionUploadFileLogs(ace)
+            false
         } catch (e: Exception) {
             log.error(e.message, e)
+            false
         }
-        return result
     }
 
     /* Private methods */
