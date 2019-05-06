@@ -110,9 +110,9 @@ public interface AmazonS3Service {
 
 	UploadFileResult uploadFile(byte[] bytes, String folder, String name, String contentType);
 
-	UploadFileResult uploadFileAsync(InputStream stream, String folder, String name, String contentType);
+	Future<UploadFileResult> uploadFileAsync(InputStream stream, String folder, String name, String contentType);
 
-	UploadFileResult uploadFileAsync(byte[] bytes, String folder, String name, String contentType);
+	Future<UploadFileResult> uploadFileAsync(byte[] bytes, String folder, String name, String contentType);
 	
 	InputStream getFile(String path);
 	
@@ -127,9 +127,9 @@ interface AmazonS3Service {
 
     fun uploadFile(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult
 
-    fun uploadFileAsync(stream: InputStream, folder: String, name: String, contentType: String): UploadFileResult
+    fun uploadFileAsync(stream: InputStream, folder: String, name: String, contentType: String): Future<UploadFileResult>
 
-    fun uploadFileAsync(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult
+    fun uploadFileAsync(bytes: ByteArray, folder: String, name: String, contentType: String): Future<UploadFileResult>
 
     fun getFile(path: String): InputStream
 
