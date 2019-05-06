@@ -1,4 +1,4 @@
-package com.migangqui.localstack.java.example;
+package com.github.migangqui.localstack.java.example;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

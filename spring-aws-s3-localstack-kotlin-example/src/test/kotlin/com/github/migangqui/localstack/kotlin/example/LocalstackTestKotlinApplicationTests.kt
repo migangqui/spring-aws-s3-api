@@ -1,4 +1,4 @@
-package com.migangqui.localstack.kotlin.example
+package com.github.migangqui.localstack.kotlin.example
 
 import org.junit.Test
 import org.junit.runner.RunWith

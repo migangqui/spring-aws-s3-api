@@ -1,7 +1,7 @@
-package com.migangqui.localstack.kotlin.example
+package com.github.migangqui.localstack.kotlin.example
 
-import com.migangqui.spring.aws.s3.bean.UploadFileResult
-import com.migangqui.spring.aws.s3.service.AmazonS3Service
+import com.github.migangqui.spring.aws.s3.bean.UploadFileResult
+import com.github.migangqui.spring.aws.s3.service.AmazonS3Service
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.ComponentScan
@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 
 @EnableAsync
-@ComponentScan("com.migangqui")
+@ComponentScan("com.github.migangqui")
 @SpringBootApplication
 class LocalstackTestKotlinApplication
 
