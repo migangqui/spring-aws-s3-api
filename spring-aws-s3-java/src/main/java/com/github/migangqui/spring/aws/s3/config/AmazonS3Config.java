@@ -8,9 +8,9 @@ import com.github.migangqui.spring.aws.s3.property.AmazonS3Properties;
 import com.github.migangqui.spring.aws.s3.service.AmazonS3Service;
 import com.github.migangqui.spring.aws.s3.service.AmazonS3ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import static com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 
@@ -18,17 +18,19 @@ import static com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguratio
 @Configuration
 public class AmazonS3Config {
 
-    @Autowired
-    private AmazonS3Properties properties;
+    @Bean
+    public AmazonS3Properties amazonS3Properties(Environment env) {
+        return new AmazonS3Properties(env);
+    }
 
     @Bean
-    public AmazonS3 amazonS3Client() {
+    public AmazonS3 amazonS3Client(AmazonS3Properties amazonS3Properties) {
         AmazonS3 client;
 
-        if (properties.isLocalstackEnabled()) {
+        if (amazonS3Properties.isLocalstackEnabled()) {
             log.info("Registering AmazonS3Client (with Localstack)");
             client = AmazonS3ClientBuilder.standard()
-                    .withEndpointConfiguration(new EndpointConfiguration(properties.getLocalstackEndpoint(), properties.getLocalstackRegion()))
+                    .withEndpointConfiguration(new EndpointConfiguration(amazonS3Properties.getLocalstackEndpoint(), amazonS3Properties.getLocalstackRegion()))
                     .withPathStyleAccessEnabled(true)
                     .build();
         } else {
@@ -36,8 +38,8 @@ public class AmazonS3Config {
 
             client = AmazonS3ClientBuilder
                     .standard()
-                    .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(properties.getS3AccessKey(), properties.getS3SecretKey())))
-                    .withRegion(properties.getRegion())
+                    .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(amazonS3Properties.getS3AccessKey(), amazonS3Properties.getS3SecretKey())))
+                    .withRegion(amazonS3Properties.getRegion())
                     .build();
         }
         return client;
@@ -47,4 +49,5 @@ public class AmazonS3Config {
     public AmazonS3Service amazonS3Service(AmazonS3 amazonS3Client, AmazonS3Properties amazonS3Properties) {
         return new AmazonS3ServiceImpl(amazonS3Client, amazonS3Properties);
     }
+
 }

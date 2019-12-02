@@ -5,7 +5,6 @@ import com.github.migangqui.spring.aws.s3.service.AmazonS3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +18,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping
 @EnableAsync
-@ComponentScan("com.github.migangqui")
 @SpringBootApplication
 public class LocalstackTestApplication {
 

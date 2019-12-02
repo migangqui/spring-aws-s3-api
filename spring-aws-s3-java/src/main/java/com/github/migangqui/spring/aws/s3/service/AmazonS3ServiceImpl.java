@@ -3,16 +3,19 @@ package com.github.migangqui.spring.aws.s3.service;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
 import com.github.migangqui.spring.aws.s3.bean.UploadFileResult;
 import com.github.migangqui.spring.aws.s3.property.AmazonS3Properties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
@@ -26,7 +29,6 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 	private AmazonS3 amazonS3Client;
 	private AmazonS3Properties properties;
 
-	@Autowired
 	public AmazonS3ServiceImpl(AmazonS3 s3Client, AmazonS3Properties properties) {
 		this.amazonS3Client = s3Client;
 		this.properties = properties;

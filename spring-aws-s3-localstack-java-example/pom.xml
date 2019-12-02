@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>com.github.migangqui</groupId>
 			<artifactId>spring-aws-s3-java</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1.RC</version>
 		</dependency>
 
 		<dependency>

@@ -11,6 +11,7 @@ import com.github.migangqui.spring.aws.s3.service.AmazonS3ServiceImpl
 import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.env.Environment
 
 @Configuration
 class AmazonS3Config(private val properties: AmazonS3Properties) {
@@ -32,6 +33,11 @@ class AmazonS3Config(private val properties: AmazonS3Properties) {
                     .withRegion(properties.region)
                     .build()
         }
+    }
+
+    @Bean
+    fun amazonS3Properties(env: Environment): AmazonS3Properties {
+        return AmazonS3Properties(env)
     }
 
     @Bean
