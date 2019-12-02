@@ -21,11 +21,9 @@ import java.io.InputStream;
 import java.util.concurrent.Future;
 
 @Slf4j
-@Service
 public class AmazonS3ServiceImpl implements AmazonS3Service {
 
 	private AmazonS3 amazonS3Client;
-
 	private AmazonS3Properties properties;
 
 	@Autowired

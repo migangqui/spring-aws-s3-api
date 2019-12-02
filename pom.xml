@@ -6,7 +6,7 @@
 
     <groupId>com.github.migangqui</groupId>
     <artifactId>spring-aws-s3</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1.RC</version>
     <packaging>pom</packaging>
 
     <name>spring-aws-s3</name>

@@ -18,7 +18,6 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.concurrent.Future
 
-@Service
 class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties: AmazonS3Properties) : AmazonS3Service {
 
     private val log = KotlinLogging.logger {}
