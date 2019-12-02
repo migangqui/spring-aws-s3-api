@@ -5,80 +5,79 @@ import com.amazonaws.AmazonServiceException
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.*
 import com.amazonaws.util.IOUtils
-import com.github.migangqui.spring.aws.s3.bean.UploadFileResult
-import com.github.migangqui.spring.aws.s3.property.AmazonS3Properties
+import com.github.migangqui.spring.aws.s3.bean.UploadFileRequest
+import com.github.migangqui.spring.aws.s3.bean.UploadFileResponse
 import mu.KotlinLogging
 import org.apache.http.HttpStatus
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Async
 import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.util.StringUtils
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.util.*
 import java.util.concurrent.Future
 
-class AmazonS3ServiceImpl(private val s3Client: AmazonS3, private val properties: AmazonS3Properties) : AmazonS3Service {
+class AmazonS3ServiceImpl(private val s3Client: AmazonS3) : AmazonS3Service {
 
     private val log = KotlinLogging.logger {}
 
-    override fun uploadFile(stream: InputStream, folder: String, name: String, contentType: String): UploadFileResult {
+    @Value("\${amazon.s3.bucket.name:us-east-1}")
+    private lateinit var defaultBucketName: String
+
+    override fun uploadFile(uploadFileRequest: UploadFileRequest): UploadFileResponse {
+        val bucketName = Optional.ofNullable(
+                Optional.ofNullable(uploadFileRequest.bucketName).orElse(defaultBucketName))
+                .orElseThrow { RuntimeException("Bucket name not indicated") }
         return try {
-            val streamToUpload = stream.clone()
+            val streamToUpload = uploadFileRequest.stream.clone()
 
             val metadata = ObjectMetadata()
-            metadata.contentLength = IOUtils.toByteArray(stream).size.toLong()
+            metadata.contentLength = IOUtils.toByteArray(uploadFileRequest.stream).size.toLong()
 
-            if (!StringUtils.isEmpty(contentType)) {
-                metadata.contentType = contentType
+            if (!StringUtils.isEmpty(uploadFileRequest.contentType)) {
+                metadata.contentType = uploadFileRequest.contentType
                 metadata.cacheControl = "s-maxage"
             }
 
-            val path = "$folder/$name"
+            val path = "$uploadFileRequest.folder/$uploadFileRequest.name"
 
-            val request = PutObjectRequest(properties.bucketName, path, streamToUpload, metadata)
+            val request = PutObjectRequest(bucketName, path, streamToUpload, metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead)
 
             log.debug("Uploading file to $path")
 
             s3Client.putObject(request)
 
-            UploadFileResult(fileName = name, status = HttpStatus.SC_OK)
+            UploadFileResponse(fileName = uploadFileRequest.name, status = HttpStatus.SC_OK)
         } catch (ase: AmazonServiceException) {
             showAmazonServiceExceptionUploadFileLogs(ase)
-            UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ase.errorMessage, ase)
+            UploadFileResponse(uploadFileRequest.name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ase.errorMessage, ase)
         } catch (ace: AmazonClientException) {
             showAmazonClientExceptionUploadFileLogs(ace)
-            UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ace.message, ace)
+            UploadFileResponse(uploadFileRequest.name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ace.message, ace)
         } catch (e: Exception) {
             log.error(e.message, e)
-            UploadFileResult(name, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.message, e)
+            UploadFileResponse(uploadFileRequest.name, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.message, e)
         }
     }
 
-    override fun uploadFile(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult {
-        return uploadFile(ByteArrayInputStream(bytes), folder, name, contentType)
-    }
-
     @Async
-    override fun uploadFileAsync(stream: InputStream, folder: String, name: String, contentType: String): Future<UploadFileResult> {
-        return AsyncResult(uploadFile(stream, folder, name, contentType))
-    }
-
-    @Async
-    override fun uploadFileAsync(bytes: ByteArray, folder: String, name: String, contentType: String): Future<UploadFileResult> {
-        return AsyncResult(uploadFile(ByteArrayInputStream(bytes), folder, name, contentType))
+    override fun uploadFileAsync(uploadFileRequest: UploadFileRequest): Future<UploadFileResponse> {
+        return AsyncResult(uploadFile(uploadFileRequest))
     }
 
     override fun getFile(path: String): InputStream {
         log.info("Reading file from AmazonS3 $path")
-        val s3Object = s3Client.getObject(GetObjectRequest(properties.bucketName, path))
+        val s3Object = s3Client.getObject(GetObjectRequest(defaultBucketName, path))
         return s3Object.objectContent
     }
 
     override fun deleteFile(path: String): Boolean {
         log.info("Deleting file from path $path")
         return try {
-            val request = DeleteObjectRequest(properties.bucketName, path)
+            val request = DeleteObjectRequest(defaultBucketName, path)
             s3Client.deleteObject(request)
             true
         } catch (ase: AmazonServiceException) {

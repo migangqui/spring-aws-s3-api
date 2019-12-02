@@ -35,7 +35,6 @@ public class AmazonS3Config {
                     .build();
         } else {
             log.info("Registering AmazonS3Client");
-
             client = AmazonS3ClientBuilder
                     .standard()
                     .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(amazonS3Properties.getS3AccessKey(), amazonS3Properties.getS3SecretKey())))
@@ -46,8 +45,8 @@ public class AmazonS3Config {
     }
 
     @Bean
-    public AmazonS3Service amazonS3Service(AmazonS3 amazonS3Client, AmazonS3Properties amazonS3Properties) {
-        return new AmazonS3ServiceImpl(amazonS3Client, amazonS3Properties);
+    public AmazonS3Service amazonS3Service(AmazonS3 amazonS3Client) {
+        return new AmazonS3ServiceImpl(amazonS3Client);
     }
 
 }

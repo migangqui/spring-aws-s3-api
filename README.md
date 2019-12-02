@@ -24,7 +24,7 @@ If you use Kotlin (<https://mvnrepository.com/artifact/com.github.migangqui/spri
 </dependency>
 ```
 
-```${currentVersion}``` right now is ```1.0.0```
+```${currentVersion}``` right now is ```1.1.0```
 
 Both them are in Maven Central.
 
@@ -55,10 +55,6 @@ amazon:
 ## Enable async
 
 Add ```@EnableAsync``` annotation in your Spring Application class to enable async upload method.
-
-## Component scan
-
-You must add in your component scan configuration the package ```com.github.migangqui```.
 
 ## File size
 

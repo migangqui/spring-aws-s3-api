@@ -1,6 +1,7 @@
 package com.github.migangqui.localstack.java.example;
 
-import com.github.migangqui.spring.aws.s3.bean.UploadFileResult;
+import com.github.migangqui.spring.aws.s3.bean.UploadFileRequest;
+import com.github.migangqui.spring.aws.s3.bean.UploadFileResponse;
 import com.github.migangqui.spring.aws.s3.service.AmazonS3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -29,8 +30,8 @@ public class LocalstackTestApplication {
     private AmazonS3Service amazonS3Service;
 
     @PostMapping("/api/files")
-    public UploadFileResult uploadFile(@RequestBody MultipartFile file, @RequestParam String folder, @RequestParam String name) throws IOException {
-        return amazonS3Service.uploadFile(file.getBytes(), folder, name, file.getContentType());
+    public UploadFileResponse uploadFile(@RequestBody MultipartFile file, @RequestParam String folder, @RequestParam String name) throws IOException {
+        return amazonS3Service.uploadFile(new UploadFileRequest(file.getBytes(), folder, name, file.getContentType()));
     }
 
 }

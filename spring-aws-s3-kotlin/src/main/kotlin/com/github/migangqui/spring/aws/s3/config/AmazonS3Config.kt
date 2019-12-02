@@ -14,26 +14,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 
 @Configuration
-class AmazonS3Config(private val properties: AmazonS3Properties) {
+class AmazonS3Config() {
 
     private val log = KotlinLogging.logger {}
-
-    @Bean
-    fun amazonS3Client(): AmazonS3 {
-        return if (properties.isLocalstackEnabled) {
-            log.info("Registering AmazonS3Client (with Localstack)")
-            AmazonS3ClientBuilder.standard()
-                    .withEndpointConfiguration(EndpointConfiguration(properties.localstackEndpoint, properties.localstackRegion))
-                    .withPathStyleAccessEnabled(true)
-                    .build()
-        } else {
-            log.info("Registering AmazonS3Client")
-            AmazonS3ClientBuilder.standard()
-                    .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(properties.s3AccessKey, properties.s3SecretKey)))
-                    .withRegion(properties.region)
-                    .build()
-        }
-    }
 
     @Bean
     fun amazonS3Properties(env: Environment): AmazonS3Properties {
@@ -41,7 +24,24 @@ class AmazonS3Config(private val properties: AmazonS3Properties) {
     }
 
     @Bean
-    fun amazonS3Service(amazonS3Client: AmazonS3, amazonS3Properties: AmazonS3Properties): AmazonS3Service {
-        return AmazonS3ServiceImpl(amazonS3Client, amazonS3Properties)
+    fun amazonS3Client(amazonS3Properties: AmazonS3Properties): AmazonS3 {
+        return if (amazonS3Properties.isLocalstackEnabled) {
+            log.info("Registering AmazonS3Client (with Localstack)")
+            AmazonS3ClientBuilder.standard()
+                    .withEndpointConfiguration(EndpointConfiguration(amazonS3Properties.localstackEndpoint, amazonS3Properties.localstackRegion))
+                    .withPathStyleAccessEnabled(true)
+                    .build()
+        } else {
+            log.info("Registering AmazonS3Client")
+            AmazonS3ClientBuilder.standard()
+                    .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(amazonS3Properties.s3AccessKey, amazonS3Properties.s3SecretKey)))
+                    .withRegion(amazonS3Properties.region)
+                    .build()
+        }
+    }
+
+    @Bean
+    fun amazonS3Service(amazonS3Client: AmazonS3): AmazonS3Service {
+        return AmazonS3ServiceImpl(amazonS3Client)
     }
 }

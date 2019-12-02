@@ -7,11 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UploadFileResult {
-	
+public class UploadFileResponse {
 	private String fileName;
 	private int status;
 	private String cause;
 	private Exception exception;
-
 }

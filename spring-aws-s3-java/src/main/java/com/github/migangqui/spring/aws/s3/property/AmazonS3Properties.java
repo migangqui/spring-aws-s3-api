@@ -4,7 +4,6 @@ import org.springframework.core.env.Environment;
 
 public class AmazonS3Properties {
 	
-	private static final String BUCKET_NAME = "amazon.s3.bucket.name";
 	private static final String S3_ACCESS_KEY = "amazon.s3.accessKey";
 	private static final String S3_SECRET_KEY = "amazon.s3.secretKey";
 	private static final String REGION = "amazon.region";
@@ -19,9 +18,6 @@ public class AmazonS3Properties {
 		this.env = env;
 	}
 
-	public String getBucketName() {
-		return env.getProperty(BUCKET_NAME);
-	}
 	public String getS3AccessKey() {
 		return env.getProperty(S3_ACCESS_KEY);
 	}

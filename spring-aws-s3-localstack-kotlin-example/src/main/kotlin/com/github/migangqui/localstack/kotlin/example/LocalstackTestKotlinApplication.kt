@@ -1,17 +1,16 @@
 package com.github.migangqui.localstack.kotlin.example
 
-import com.github.migangqui.spring.aws.s3.bean.UploadFileResult
+import com.github.migangqui.spring.aws.s3.bean.UploadFileRequest
+import com.github.migangqui.spring.aws.s3.bean.UploadFileResponse
 import com.github.migangqui.spring.aws.s3.service.AmazonS3Service
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 
 @EnableAsync
-@ComponentScan("com.github.migangqui")
 @SpringBootApplication
 class LocalstackTestKotlinApplication
 
@@ -24,8 +23,8 @@ fun main(args: Array<String>) {
 class MediaController(private val amazonS3Service: AmazonS3Service) {
     @PostMapping
     @Throws(IOException::class)
-    fun uploadFile(@RequestBody file: MultipartFile, @RequestParam folder: String, @RequestParam name: String): UploadFileResult {
-        return amazonS3Service.uploadFile(file.bytes, folder, name, file.contentType!!)
+    fun uploadFile(@RequestBody file: MultipartFile, @RequestParam folder: String, @RequestParam name: String): UploadFileResponse {
+        return amazonS3Service.uploadFile(UploadFileRequest(file.bytes, folder, name, file.contentType!!))
     }
 }
 
