@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.*
 import com.amazonaws.util.IOUtils
 import com.github.migangqui.spring.aws.s3.bean.UploadFileRequest
 import com.github.migangqui.spring.aws.s3.bean.UploadFileResponse
+import com.github.migangqui.spring.aws.s3.exception.NoBucketException
 import mu.KotlinLogging
 import org.apache.http.HttpStatus
 import org.springframework.beans.factory.annotation.Value
@@ -23,14 +24,15 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3) : AmazonS3Service {
 
     private val log = KotlinLogging.logger {}
 
-    @Value("\${amazon.s3.bucket.name:us-east-1}")
+    @Value("\${amazon.s3.bucket.name}")
     private lateinit var defaultBucketName: String
 
     override fun uploadFile(uploadFileRequest: UploadFileRequest): UploadFileResponse {
-        val bucketName = Optional.ofNullable(
-                Optional.ofNullable(uploadFileRequest.bucketName).orElse(defaultBucketName))
-                .orElseThrow { RuntimeException("Bucket name not indicated") }
         return try {
+            val bucketName = Optional.ofNullable(
+                Optional.ofNullable(uploadFileRequest.bucketName).orElse(defaultBucketName))
+                .orElseThrow { NoBucketException("Bucket name not indicated") }
+
             val streamToUpload = uploadFileRequest.stream.clone()
 
             val metadata = ObjectMetadata()
@@ -44,7 +46,7 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3) : AmazonS3Service {
             val path = "$uploadFileRequest.folder/$uploadFileRequest.name"
 
             val request = PutObjectRequest(bucketName, path, streamToUpload, metadata)
-                    .withCannedAcl(CannedAccessControlList.PublicRead)
+                .withCannedAcl(uploadFileRequest.accessControl)
 
             log.debug("Uploading file to $path")
 
@@ -57,8 +59,11 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3) : AmazonS3Service {
         } catch (ace: AmazonClientException) {
             showAmazonClientExceptionUploadFileLogs(ace)
             UploadFileResponse(uploadFileRequest.name, HttpStatus.SC_INTERNAL_SERVER_ERROR, ace.message, ace)
+        } catch (e: NoBucketException) {
+            log.warn { e.message }
+            UploadFileResponse(uploadFileRequest.name, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.message, e)
         } catch (e: Exception) {
-            log.error(e.message, e)
+            log.error { e.message }
             UploadFileResponse(uploadFileRequest.name, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.message, e)
         }
     }
@@ -87,7 +92,7 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3) : AmazonS3Service {
             showAmazonClientExceptionUploadFileLogs(ace)
             false
         } catch (e: Exception) {
-            log.error(e.message, e)
+            log.error { e.message }
             false
         }
     }
@@ -95,19 +100,23 @@ class AmazonS3ServiceImpl(private val s3Client: AmazonS3) : AmazonS3Service {
     /* Private methods */
 
     private fun showAmazonServiceExceptionUploadFileLogs(ase: AmazonServiceException) {
-        log.error("Caught an AmazonServiceException, which means your request made it " +
-                "to Amazon S3, but was rejected with an error response for some reason.")
-        log.error("Error Message:    ${ase.message}")
-        log.error("HTTP Status Code: ${ase.statusCode}")
-        log.error("AWS Error Code:   ${ase.errorCode}")
-        log.error("Error Type:       ${ase.errorType}")
-        log.error("Request ID:       ${ase.requestId}")
+        log.error(
+            "Caught an AmazonServiceException, which means your request made it " +
+                    "to Amazon S3, but was rejected with an error response for some reason."
+        )
+        log.error { "Error Message:    ${ase.message}" }
+        log.error { "HTTP Status Code: ${ase.statusCode}" }
+        log.error { "AWS Error Code:   ${ase.errorCode}" }
+        log.error { "Error Type:       ${ase.errorType}" }
+        log.error { "Request ID:       ${ase.requestId}" }
     }
 
     private fun showAmazonClientExceptionUploadFileLogs(ace: AmazonClientException) {
-        log.error("Caught an AmazonClientException, which means the client encountered " +
-                "an internal error while trying to communicate with S3, such as not being able to access the network.")
-        log.error("Error Message: ${ace.message}")
+        log.error {
+            "Caught an AmazonClientException, which means the client encountered " +
+                    "an internal error while trying to communicate with S3, such as not being able to access the network."
+        }
+        log.error { "Error Message: ${ace.message}" }
     }
 
     private fun InputStream.clone(): InputStream? {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @RestController
@@ -31,7 +32,7 @@ public class LocalstackTestApplication {
 
     @PostMapping("/api/files")
     public UploadFileResponse uploadFile(@RequestBody MultipartFile file, @RequestParam String folder, @RequestParam String name) throws IOException {
-        return amazonS3Service.uploadFile(new UploadFileRequest(file.getBytes(), folder, name, file.getContentType()));
+        return amazonS3Service.uploadFile(UploadFileRequest.builder().stream(new ByteArrayInputStream(file.getBytes())).folder(folder).name(name).contentType(file.getContentType()).build());
     }
 
 }

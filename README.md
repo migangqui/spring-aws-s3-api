@@ -83,11 +83,11 @@ In order to run easily Localstack, I have added ```docker-compose.yml``` file to
 You have run the command ```docker-compose up``` to make it work.
 
 I hardly recommend install AWS CLI in your local. It helps you to manage the buckets to run the tests with Localstack.
-Here you are the documentation to install: <https://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html>
+Here you are the documentation to install the version 2: <https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html>
 
-To create a local bucket you must run this command `aws --endpoint-url=http://localhost:4572 s3 mb s3://mytestbucket`
+To create a local bucket you must run this command `aws2 --endpoint-url=http://localhost:4572 s3 mb s3://mytestbucket`
 
-To check out if the bucket has been created run this command `aws --endpoint-url=http://localhost:4572 s3 ls`
+To check out if the bucket has been created run this command `aws2 --endpoint-url=http://localhost:4572 s3 ls`
 
 When you create a bucket, you have to add `yourbucketname.localhost` to your hosts local file mapped to `127.0.0.1`.
 
@@ -102,40 +102,41 @@ The service provide these methods:
 ```java
 public interface AmazonS3Service {
 	
-	UploadFileResult uploadFile(InputStream stream, String folder, String name, String contentType);
+    UploadFileResponse uploadFile(UploadFileRequest uploadFileRequest);
+    
+    Future<UploadFileResponse> uploadFileAsync(UploadFileRequest uploadFileRequest);
 
-	UploadFileResult uploadFile(byte[] bytes, String folder, String name, String contentType);
+    InputStream getFile(String path);
+    
+    boolean deleteFile(String path);
 
-	Future<UploadFileResult> uploadFileAsync(InputStream stream, String folder, String name, String contentType);
-
-	Future<UploadFileResult> uploadFileAsync(byte[] bytes, String folder, String name, String contentType);
-	
-	InputStream getFile(String path);
-	
-	boolean deleteFile(String path);
 }
 ```
 ##### Kotlin
 ```kotlin
 interface AmazonS3Service {
+    
+    fun uploadFile(uploadFileRequest: UploadFileRequest): UploadFileResponse
 
-    fun uploadFile(stream: InputStream, folder: String, name: String, contentType: String): UploadFileResult
-
-    fun uploadFile(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult
-
-    fun uploadFileAsync(stream: InputStream, folder: String, name: String, contentType: String): Future<UploadFileResult>
-
-    fun uploadFileAsync(bytes: ByteArray, folder: String, name: String, contentType: String): Future<UploadFileResult>
+    fun uploadFileAsync(uploadFileRequest: UploadFileRequest): Future<UploadFileResponse>
 
     fun getFile(path: String): InputStream
 
     fun deleteFile(path: String): Boolean
+
 }
 ```
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
+
+## Improvements
+###v1.1.0
+* Improve configuration
+* Not component scan necesary
+* Refactor code
+* Chose bucket name dinamically
 
 ## Next improvements
 

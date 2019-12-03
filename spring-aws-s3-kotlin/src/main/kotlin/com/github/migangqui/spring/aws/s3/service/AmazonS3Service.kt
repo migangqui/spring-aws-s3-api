@@ -6,7 +6,6 @@ import java.io.InputStream
 import java.util.concurrent.Future
 
 interface AmazonS3Service {
-
     fun uploadFile(uploadFileRequest: UploadFileRequest): UploadFileResponse
 
     fun uploadFileAsync(uploadFileRequest: UploadFileRequest): Future<UploadFileResponse>

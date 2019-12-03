@@ -12,6 +12,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
 import com.github.migangqui.spring.aws.s3.bean.UploadFileRequest;
 import com.github.migangqui.spring.aws.s3.bean.UploadFileResponse;
+import com.github.migangqui.spring.aws.s3.exception.NoBucketException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,11 +42,11 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     public UploadFileResponse uploadFile(UploadFileRequest uploadFileRequest) {
         UploadFileResponse result;
 
-        String bucketName = Optional.ofNullable(
-        		Optional.ofNullable(uploadFileRequest.getBucketName()).orElse(defaultBucketName))
-				.orElseThrow(() -> new RuntimeException("Bucket name not indicated"));
-
         try {
+            String bucketName = Optional.ofNullable(
+                    Optional.ofNullable(uploadFileRequest.getBucketName()).orElse(defaultBucketName))
+                    .orElseThrow(() -> new NoBucketException("Bucket name not indicated"));
+
             InputStream streamToUpload = clone(uploadFileRequest.getStream());
 
             ObjectMetadata metadata = new ObjectMetadata();
@@ -59,7 +60,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
             String path = uploadFileRequest.getFolder().concat("/").concat(uploadFileRequest.getName());
 
             PutObjectRequest request = new PutObjectRequest(bucketName, path, streamToUpload, metadata)
-                    .withCannedAcl(CannedAccessControlList.PublicRead);
+                    .withCannedAcl(uploadFileRequest.getAccessControl());
 
             log.debug("Uploading file to {}", path);
 
