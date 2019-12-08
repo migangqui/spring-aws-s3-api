@@ -102,13 +102,13 @@ The service provide these methods:
 ```java
 public interface AmazonS3Service {
 	
-    UploadFileResponse uploadFile(UploadFileRequest uploadFileRequest);
+    UploadFileResponse uploadFile(UploadFileRequest request);
     
-    Future<UploadFileResponse> uploadFileAsync(UploadFileRequest uploadFileRequest);
+    Future<UploadFileResponse> uploadFileAsync(UploadFileRequest request);
 
-    InputStream getFile(String path);
+    GetFileResponse getFile(GetFileRequest request);
     
-    boolean deleteFile(String path);
+    DeleteFileResponse deleteFile(DeleteFileRequest request);
 
 }
 ```
@@ -116,20 +116,20 @@ public interface AmazonS3Service {
 ```kotlin
 interface AmazonS3Service {
     
-    fun uploadFile(uploadFileRequest: UploadFileRequest): UploadFileResponse
+    fun uploadFile(request: UploadFileRequest): UploadFileResponse
+    
+    fun uploadFileAsync(request: UploadFileRequest): Future<UploadFileResponse>
 
-    fun uploadFileAsync(uploadFileRequest: UploadFileRequest): Future<UploadFileResponse>
+    fun getFile(request: GetFileRequest): GetFileResponse
 
-    fun getFile(path: String): InputStream
-
-    fun deleteFile(path: String): Boolean
+    fun deleteFile(request: DeleteFileRequest): DeleteFileResponse
 
 }
 ```
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE file for details
 
 ## Improvements
 ### v1.1.0
@@ -138,10 +138,10 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 * Refactor code
 * Chose bucket name dynamically
 * Beans to manage all request and responses
+* AWS S3 File access configuration (Private by default)
 
 ## Next improvements
 
 In future versions is planned include:
-* AWS S3 File access configuration (nowadays is Public Read by default)
 * Unit tests
 * ... 
