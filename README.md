@@ -4,7 +4,7 @@ Here we are a Java and a Kotlin API to manage files of AmazonS3 in Spring framew
 
 ### Add dependency to pom.xml:
 
-If you use Java (https://mvnrepository.com/artifact/com.github.migangqui/spring-aws-s3-java):
+If you use Java (<https://mvnrepository.com/artifact/com.github.migangqui/spring-aws-s3-java>):
 
 ```xml
 <dependency>
@@ -14,7 +14,7 @@ If you use Java (https://mvnrepository.com/artifact/com.github.migangqui/spring-
 </dependency>
 ```
 
-If you use Kotlin (https://mvnrepository.com/artifact/com.github.migangqui/spring-aws-s3-kotlin):
+If you use Kotlin (<https://mvnrepository.com/artifact/com.github.migangqui/spring-aws-s3-kotlin>):
 
 ```xml
 <dependency>
@@ -24,7 +24,7 @@ If you use Kotlin (https://mvnrepository.com/artifact/com.github.migangqui/sprin
 </dependency>
 ```
 
-```${currentVersion}``` right now is ```1.0.0```
+```${currentVersion}``` right now is ```1.1.0```
 
 Both them are in Maven Central.
 
@@ -56,10 +56,6 @@ amazon:
 
 Add ```@EnableAsync``` annotation in your Spring Application class to enable async upload method.
 
-## Component scan
-
-You must add in your component scan configuration the package ```com.github.migangqui```.
-
 ## File size
 
 To controle max size of files you can upload, set the following properties:
@@ -73,7 +69,7 @@ spring:
 
 ## Localstack support
 
-This library can be tested with Localstack (https://github.com/localstack/localstack).
+This library can be tested with Localstack (<https://github.com/localstack/localstack>).
 You only have to set the following properties in your application.yml:
 
 ```yaml
@@ -87,13 +83,15 @@ In order to run easily Localstack, I have added ```docker-compose.yml``` file to
 You have run the command ```docker-compose up``` to make it work.
 
 I hardly recommend install AWS CLI in your local. It helps you to manage the buckets to run the tests with Localstack.
-Here you are the documentation to install: https://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html
+Here you are the documentation to install the version 2: <https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html>
 
-To create a local bucket you must run this command `aws --endpoint-url=http://localhost:4572 s3 mb s3://mytestbucket`
+To create a local bucket you must run this command `aws2 --endpoint-url=http://localhost:4572 s3 mb s3://mytestbucket`
 
-To check out if the bucket has been created run this command `aws --endpoint-url=http://localhost:4572 s3 ls`
+To check out if the bucket has been created run this command `aws2 --endpoint-url=http://localhost:4572 s3 ls`
 
 When you create a bucket, you have to add `yourbucketname.localhost` to your hosts local file mapped to `127.0.0.1`.
+
+Here we are the AWS CLI S3 command options: <https://docs.aws.amazon.com/en_en/cli/latest/userguide/cli-services-s3-commands.html>
 
 ## How to use
 
@@ -104,44 +102,44 @@ The service provide these methods:
 ```java
 public interface AmazonS3Service {
 	
-	UploadFileResult uploadFile(InputStream stream, String folder, String name, String contentType);
+    UploadFileResponse uploadFile(UploadFileRequest request);
+    
+    Future<UploadFileResponse> uploadFileAsync(UploadFileRequest request);
 
-	UploadFileResult uploadFile(byte[] bytes, String folder, String name, String contentType);
+    GetFileResponse getFile(GetFileRequest request);
+    
+    DeleteFileResponse deleteFile(DeleteFileRequest request);
 
-	UploadFileResult uploadFileAsync(InputStream stream, String folder, String name, String contentType);
-
-	UploadFileResult uploadFileAsync(byte[] bytes, String folder, String name, String contentType);
-	
-	InputStream getFile(String path);
-	
-	boolean deleteFile(String path);
 }
 ```
 ##### Kotlin
 ```kotlin
 interface AmazonS3Service {
+    
+    fun uploadFile(request: UploadFileRequest): UploadFileResponse
+    
+    fun uploadFileAsync(request: UploadFileRequest): Future<UploadFileResponse>
 
-    fun uploadFile(stream: InputStream, folder: String, name: String, contentType: String): UploadFileResult
+    fun getFile(request: GetFileRequest): GetFileResponse
 
-    fun uploadFile(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult
+    fun deleteFile(request: DeleteFileRequest): DeleteFileResponse
 
-    fun uploadFileAsync(stream: InputStream, folder: String, name: String, contentType: String): UploadFileResult
-
-    fun uploadFileAsync(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult
-
-    fun getFile(path: String): InputStream
-
-    fun deleteFile(path: String): Boolean
 }
 ```
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE file for details
+
+## Improvements
+### v1.1.0
+* Improve configuration
+* Not component scan necessary
+* Refactor code
+* Chose bucket name dynamically
+* Beans to manage all request and responses
+* AWS S3 File access configuration (Private by default)
 
 ## Next improvements
 
-In future versions is planned include:
-* AWS S3 File access configuration (nowadays is Public Read by default)
-* Unit tests
-* ... 
+I'm very pleased to receive suggestions.

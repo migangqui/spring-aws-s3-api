@@ -1,13 +1,9 @@
 package com.github.migangqui.spring.aws.s3.property;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.env.Environment;
 
-@ConfigurationProperties
 public class AmazonS3Properties {
 	
-	private static final String BUCKET_NAME = "amazon.s3.bucket.name";
 	private static final String S3_ACCESS_KEY = "amazon.s3.accessKey";
 	private static final String S3_SECRET_KEY = "amazon.s3.secretKey";
 	private static final String REGION = "amazon.region";
@@ -16,12 +12,12 @@ public class AmazonS3Properties {
 	private static final String LOCALSTACK_ENDPOINT = "localstack.endpoint";
 	private static final String LOCALSTACK_REGION = "localstack.region";
 
-	@Autowired
 	private Environment env;
-	
-	public String getBucketName() {
-		return env.getProperty(BUCKET_NAME);
+
+	public AmazonS3Properties(Environment env) {
+		this.env = env;
 	}
+
 	public String getS3AccessKey() {
 		return env.getProperty(S3_ACCESS_KEY);
 	}

@@ -1,11 +1,8 @@
 package com.github.migangqui.spring.aws.s3.property
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.core.env.Environment
 
-@ConfigurationProperties
-class AmazonS3Properties(@Autowired private val env: Environment) {
+class AmazonS3Properties(private val env: Environment) {
 
     private val BUCKET_NAME = "amazon.s3.bucket.name"
     private val S3_ACCESS_KEY = "amazon.s3.accessKey"

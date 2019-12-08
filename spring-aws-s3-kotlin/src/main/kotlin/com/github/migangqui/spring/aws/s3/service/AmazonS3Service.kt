@@ -1,20 +1,15 @@
 package com.github.migangqui.spring.aws.s3.service
 
-import com.github.migangqui.spring.aws.s3.bean.UploadFileResult
+import com.github.migangqui.spring.aws.s3.bean.*
 import java.io.InputStream
 import java.util.concurrent.Future
 
 interface AmazonS3Service {
+    fun uploadFile(request: UploadFileRequest): UploadFileResponse
 
-    fun uploadFile(stream: InputStream, folder: String, name: String, contentType: String): UploadFileResult
+    fun uploadFileAsync(request: UploadFileRequest): Future<UploadFileResponse>
 
-    fun uploadFile(bytes: ByteArray, folder: String, name: String, contentType: String): UploadFileResult
+    fun getFile(request: GetFileRequest): GetFileResponse
 
-    fun uploadFileAsync(stream: InputStream, folder: String, name: String, contentType: String): Future<UploadFileResult>
-
-    fun uploadFileAsync(bytes: ByteArray, folder: String, name: String, contentType: String): Future<UploadFileResult>
-
-    fun getFile(path: String): InputStream
-
-    fun deleteFile(path: String): Boolean
+    fun deleteFile(request: DeleteFileRequest): DeleteFileResponse
 }

@@ -2,9 +2,9 @@ server:
   port: 9090
 amazon:
   s3:
-    accessKey: [AMAZON_ACCESS_KEY]
-    secretKey: [AMAZON_SECRET_KEY]
-    bucket.name: bucket1
+    accessKey: foobar
+    secretKey: foobar
+    bucket.name: mytestbucket
   region: us-east-1
 localstack:
   enabled: true
