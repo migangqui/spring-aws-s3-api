@@ -142,6 +142,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Next improvements
 
-In future versions is planned include:
-* Unit tests
-* ... 
+I'm very pleased to receive suggestions.
