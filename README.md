@@ -132,11 +132,12 @@ interface AmazonS3Service {
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Improvements
-###v1.1.0
+### v1.1.0
 * Improve configuration
-* Not component scan necesary
+* Not component scan necessary
 * Refactor code
-* Chose bucket name dinamically
+* Chose bucket name dynamically
+* Beans to manage all request and responses
 
 ## Next improvements
 
